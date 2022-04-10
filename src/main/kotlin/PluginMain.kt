@@ -26,7 +26,7 @@ build.gradle.kts里改依赖库和插件版本
 
 object PluginMain : KotlinPlugin(
     JvmPluginDescription(
-        id = "org.example.mirai-example",
+        id = "wxgj.tinasporutrobot.mirai.plugin",
         name = "插件示例",
         version = "0.1.0"
     )
