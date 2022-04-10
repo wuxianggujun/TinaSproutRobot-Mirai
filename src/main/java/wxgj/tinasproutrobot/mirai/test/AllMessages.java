@@ -3,6 +3,7 @@ package wxgj.tinasproutrobot.mirai.test;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 public class AllMessages extends SimpleListenerHost {
     // 所有方法类型
@@ -16,4 +17,15 @@ public class AllMessages extends SimpleListenerHost {
             event.getSubject().sendMessage("Hello Mirai :)");
         }
     }
+
+    @EventHandler
+    private void onGroupMessage(GroupMessageEvent event) {
+      //event.getGroup().getFiles();
+    }
+
+
+
+
+
+
 }
