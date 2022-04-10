@@ -1,10 +1,10 @@
-package wxgj.tinasproutrbot.mirai.test;
+package wxgj.tinasproutrobot.mirai.test;
 
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.contact.User;
-import wxgj.tinasproutrbot.mirai.JavaPluginMain;
+import wxgj.tinasproutrobot.mirai.JavaPluginMain;
 
 //这样在聊天环境（安装chat-command并分配权限后）发送/echo @<bot> <message>，bot就会复读这个message
 public class Echo extends JSimpleCommand {

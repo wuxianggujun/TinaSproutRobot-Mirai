@@ -1,4 +1,4 @@
-package wxgj.tinasproutrbot.mirai.test;
+package wxgj.tinasproutrobot.mirai.test;
 
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;

@@ -1,4 +1,4 @@
-package wxgj.tinasproutrbot.mirai;
+package wxgj.tinasproutrobot.mirai;
 
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandManager;
@@ -8,14 +8,14 @@ import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.BotOnlineEvent;
-import wxgj.tinasproutrbot.mirai.test.AllMessages;
-import wxgj.tinasproutrbot.mirai.test.Echo;
+import wxgj.tinasproutrobot.mirai.test.AllMessages;
+import wxgj.tinasproutrobot.mirai.test.Echo;
 
 
 /*
 使用java请把
 src/main/resources/META-INF.services/net.mamoe.mirai.console.plugin.jvm.JvmPlugin
-文件内容改成"wxgj.tinasproutrbot.mirai.JavaPluginMain"也就是当前主类
+文件内容改成"wxgj.tinasproutrobot.mirai.JavaPluginMain"也就是当前主类
 使用java可以把kotlin文件夹删除不会对项目有影响
 
 在settings.gradle.kts里改生成的插件.jar名称

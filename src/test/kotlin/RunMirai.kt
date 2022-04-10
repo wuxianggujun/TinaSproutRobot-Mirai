@@ -1,4 +1,4 @@
-package wxgj.tinasproutrbot.mirai
+package wxgj.tinasproutrobot.mirai
 
 import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.console.MiraiConsole
