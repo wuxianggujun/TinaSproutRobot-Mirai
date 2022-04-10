@@ -1,9 +1,14 @@
 package wxgj.tinasproutrobot.mirai.test;
 
+import net.mamoe.mirai.contact.file.AbsoluteFile;
+import net.mamoe.mirai.contact.file.AbsoluteFolder;
+import net.mamoe.mirai.contact.file.RemoteFiles;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.message.data.FileMessage;
+import net.mamoe.mirai.utils.MiraiLogger;
 
 public class AllMessages extends SimpleListenerHost {
     // 所有方法类型
@@ -20,12 +25,20 @@ public class AllMessages extends SimpleListenerHost {
 
     @EventHandler
     private void onGroupMessage(GroupMessageEvent event) {
-      //event.getGroup().getFiles();
+        MiraiLogger logger = event.getBot().getLogger();
+//        RemoteFiles files = event.getGroup().getFiles();
+//logger.info("RomoteFiles:"+files.toString());
+//        AbsoluteFolder root = files.getRoot();
+//        logger.debug("AbsoluteFolder:"+root.children());
+        FileMessage fileMessage = event.getMessage().get(FileMessage.Key);
+        if (fileMessage != null) {
+            AbsoluteFile remoteFiles = fileMessage.toAbsoluteFile(event.getGroup());
+            logger.info("文件名字：" + remoteFiles.getName());
+            logger.info("文件链接：" + remoteFiles.getUrl());
+            return;
+        }
+
     }
-
-
-
-
 
 
 }
