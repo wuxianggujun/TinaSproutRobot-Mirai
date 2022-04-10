@@ -1,4 +1,4 @@
-package org.example.mirai.plugin
+package wxgj.tinasproutrbot.mirai
 
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -15,7 +15,7 @@ import net.mamoe.mirai.utils.info
 /*
 使用kotlin版请把
 src/main/resources/META-INF.services/net.mamoe.mirai.console.plugin.jvm.JvmPlugin
-文件内容改成"org.example.mirai.plugin.PluginMain"也就是当前主类
+文件内容改成"wxgj.tinasproutrbot.mirai.PluginMain"也就是当前主类
 使用kt可以把java文件夹删除不会对项目有影响
 
 在settings.gradle.kts里改生成的插件.jar名称
