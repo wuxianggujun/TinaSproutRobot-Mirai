@@ -1,34 +1,46 @@
 package wxgj.tinasproutrobot.mirai
 
+import net.mamoe.mirai.console.ConsoleFrontEndImplementation
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
-import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent
-import net.mamoe.mirai.event.events.FriendMessageEvent
-import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.NewFriendRequestEvent
-import net.mamoe.mirai.event.globalEventChannel
-import net.mamoe.mirai.message.data.Image
-import net.mamoe.mirai.message.data.Image.Key.queryUrl
-import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.event.GlobalEventChannel
+import net.mamoe.mirai.event.events.MessageEvent
+import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.utils.info
 import wxgj.tinasproutrobot.mirai.command.Echo
 import wxgj.tinasproutrobot.mirai.event.EventHost
 
 
-object PluginMain : KotlinPlugin(
+class PluginMain : KotlinPlugin(
     JvmPluginDescription(
         id = "wxgj.tinasproutrobot.mirai",
         name = "TinaSproutRobot-Mirai",
         version = "0.1.0"
     )
 ) {
-    override fun onEnable() {
-        logger.info { "Plugin loaded" }
-        //配置文件目录 "${dataFolder.absolutePath}/"
 
+    @OptIn(ConsoleFrontEndImplementation::class)
+    override fun onEnable() {
+        logger.info { "机器人已经加载" }
+        //配置文件目录 "${dataFolder.absolutePath}/"
         Echo.register();//注册命令
-        globalEventChannel().registerListenerHost(EventHost)
+        //CommandManager.registerCommand(Echo);
+        // 改自官方文档的例子
+        GlobalEventChannel.registerListenerHost(EventHost);
+        //var channel = GlobalEventChannel.filter { e is MessageEvent && e.message.contains(At.Key) }
+    }
+
+    companion object {
+        @JvmField
+        var INSTANCE = PluginMain();
+    }
+
+}
+
+
+/*  globalEventChannel().registerListenerHost(EventHost)
 
         globalEventChannel().subscribeAlways<GroupMessageEvent>{
             //群消息
@@ -69,6 +81,5 @@ object PluginMain : KotlinPlugin(
         globalEventChannel().subscribeAlways<BotInvitedJoinGroupRequestEvent>{
             //自动同意加群申请
             accept()
-        }
-    }
-}
+        }*/
+
