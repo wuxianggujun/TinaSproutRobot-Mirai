@@ -1,13 +1,14 @@
 package wxgj.tinasproutrobot.mirai
 
+import net.mamoe.mirai.Bot
 import net.mamoe.mirai.console.ConsoleFrontEndImplementation
-import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
+import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.GlobalEventChannel
-import net.mamoe.mirai.event.events.MessageEvent
-import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.event.events.BotEvent
+import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.utils.info
 import wxgj.tinasproutrobot.mirai.command.Echo
 import wxgj.tinasproutrobot.mirai.event.EventHost
@@ -28,8 +29,26 @@ class PluginMain : KotlinPlugin(
         Echo.register();//注册命令
         //CommandManager.registerCommand(Echo);
         // 改自官方文档的例子
-        GlobalEventChannel.registerListenerHost(EventHost);
+        //GlobalEventChannel.registerListenerHost(EventHost);
         //var channel = GlobalEventChannel.filter { e is MessageEvent && e.message.contains(At.Key) }
+
+        //        //GlobalEventChannel.INSTANCE.registerListenerHost(new AllMessages());
+        //        //只在消息有 At 的时候才触发事件
+        //        EventChannel channel = GlobalEventChannel.INSTANCE.filter(e -> {
+        //            if (e instanceof MessageEvent) {
+        //                return ((MessageEvent) e).getMessage().contains(At.Key);
+        //            }
+        //            return false;
+        //        });
+        //        channel.registerListenerHost(new AllMessages());
+        GlobalEventChannel.filterIsInstance(BotOnlineEvent::class.java)
+            .filter { (bot): BotOnlineEvent -> bot.id == 2405024938L }
+            .subscribeAlways<BotOnlineEvent> {
+                val bot: Bot = this.bot;
+                val eventChannel: EventChannel<BotEvent> = bot.eventChannel;
+                eventChannel.registerListenerHost(EventHost)
+            }
+
     }
 
     companion object {
