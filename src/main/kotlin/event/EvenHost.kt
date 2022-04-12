@@ -37,14 +37,6 @@ object EventHost : SimpleListenerHost() {
             }
 
 
-//            val absoluteFile: Flow<AbsoluteFile> = event.group.files.root.files().catch {
-//                miraiLogger.error("Error loading reserved $it")
-//            }
-//            absoluteFile.collect {
-//                miraiLogger.info("我在干哈")
-//                miraiLogger.info(it.name);
-//            }
-//            //miraiLogger.info()
         }
     }
 
