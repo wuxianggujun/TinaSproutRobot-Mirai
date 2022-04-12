@@ -1,12 +1,17 @@
 package wxgj.tinasproutrobot.mirai.event
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transform
+import net.mamoe.mirai.contact.file.AbsoluteFile
 import net.mamoe.mirai.contact.file.AbsoluteFileFolder
+import net.mamoe.mirai.contact.file.RemoteFiles
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.SimpleListenerHost
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.utils.MiraiLogger
+import kotlin.coroutines.CoroutineContext
 
 object EventHost : SimpleListenerHost() {
 
@@ -23,21 +28,31 @@ object EventHost : SimpleListenerHost() {
     suspend fun handleMessage(event: GroupMessageEvent) {
         //println(event.message);
         val miraiLogger: MiraiLogger = event.bot.logger
-        miraiLogger.info("草")
+        miraiLogger.info("QQ号:${event.bot}")
         if (event.message.contentToString() == "群文件") {
             //获取该目录下所有文件和子目录列表.
             val absoluteFileFolders: Flow<AbsoluteFileFolder> = event.group.files.root.children()
             absoluteFileFolders.collect {
-                if (it.parent != null) {
-                    miraiLogger.info("我是:`${it.name}`")
+                println("为什么给我打印两次啊")
+                if (it.isFile) {
+                        println("文件名:${it.name}")
+                }
 
-                } else {
-                    miraiLogger.info("当前为根目录")
+
+                if (it.isFolder){
+                    val remoteFiles: Flow<AbsoluteFile>? =it.parent?.files();
+                    remoteFiles?.collect{
+                        println(it.name)
+                    }
                 }
             }
 
 
         }
+    }
+
+    override fun handleException(context: CoroutineContext, exception: Throwable) {
+        println(exception.cause)
     }
 
 

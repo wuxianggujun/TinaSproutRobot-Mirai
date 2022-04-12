@@ -27,20 +27,6 @@ class PluginMain : KotlinPlugin(
         logger.info { "机器人已经加载" }
         //配置文件目录 "${dataFolder.absolutePath}/"
         Echo.register();//注册命令
-        //CommandManager.registerCommand(Echo);
-        // 改自官方文档的例子
-        //GlobalEventChannel.registerListenerHost(EventHost);
-        //var channel = GlobalEventChannel.filter { e is MessageEvent && e.message.contains(At.Key) }
-
-        //        //GlobalEventChannel.INSTANCE.registerListenerHost(new AllMessages());
-        //        //只在消息有 At 的时候才触发事件
-        //        EventChannel channel = GlobalEventChannel.INSTANCE.filter(e -> {
-        //            if (e instanceof MessageEvent) {
-        //                return ((MessageEvent) e).getMessage().contains(At.Key);
-        //            }
-        //            return false;
-        //        });
-        //        channel.registerListenerHost(new AllMessages());
         GlobalEventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { (bot): BotOnlineEvent -> bot.id == 2405024938L }
             .subscribeAlways<BotOnlineEvent> {

@@ -16,6 +16,8 @@ import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Collectors;
+
 public class AllMessages extends SimpleListenerHost {
     MiraiLogger logger;
 
@@ -47,17 +49,15 @@ public class AllMessages extends SimpleListenerHost {
             logger.debug("RemoteFiles:" + remoteFiles.getRoot().getName());
             AbsoluteFolder absoluteFile = remoteFiles.getRoot();
             logger.info("AbsoluteFolder:" + absoluteFile.getName());
-            Flow<AbsoluteFile> absoluteFolders = remoteFiles.getRoot().files();
-            absoluteFolders.collect(new FlowCollector<AbsoluteFile>() {
-                @Nullable
-                @Override
-                public Object emit(AbsoluteFile absoluteFile, @NotNull Continuation<? super Unit> continuation) {
-                    logger.info("AbsoluteFile:" + absoluteFile.getName());
-                    return null;
-                }
-            },null);
+           // Flow<AbsoluteFile> absoluteFolders = remoteFiles.getRoot().files();
+            //absoluteFolders.collect(Collectors.toList())
 
         }
+
+
+//        RemoteFile root = group.getFilesRoot();
+//        List<String> fileIds = root.listFilesCollection().stream().map(remoteFile -> remoteFile.getId()).collect(Collectors.toList());
+//        storageData.getData().removeIf(remoteFileData -> !fileIds.removeIf(s -> s.equals(remoteFileData.getId())));
 
 //        FileMessage fileMessage = event.getMessage().get(FileMessage.Key);
 //        if (fileMessage != null) {
