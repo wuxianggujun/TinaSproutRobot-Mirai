@@ -1,13 +1,11 @@
 package wxgj.tinasproutrobot.mirai.event
 
-import kotlinx.coroutines.flow.Flow
-import net.mamoe.mirai.contact.file.AbsoluteFile
-import net.mamoe.mirai.contact.file.AbsoluteFileFolder
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.SimpleListenerHost
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.utils.MiraiLogger
+import wxgj.tinasproutrobot.mirai.event.file.BotGroupFile
 import kotlin.coroutines.CoroutineContext
 
 object EventHost : SimpleListenerHost() {
@@ -27,26 +25,10 @@ object EventHost : SimpleListenerHost() {
         val miraiLogger: MiraiLogger = event.bot.logger
         miraiLogger.info("QQ号:${event.bot}")
         if (event.message.contentToString() == "群文件") {
-            //获取该目录下所有文件和子目录列表.
-            val absoluteFiles: Flow<AbsoluteFileFolder> = event.group.files.root.children()
-            absoluteFiles.collect {
-                if (it.isFile) {
-                    println("文件名:${it.name}")
-                }
-
-                if (it.isFolder) {
-                    event.group.files.root.folders().collect {
-                        it.files().collect { asf: AbsoluteFile ->
-                            println("子文件夹:${asf.name}")
-                        }
-                    }
-//                    val remoteFiles: Flow<AbsoluteFile>? = it.parent?.files();
-//                    remoteFiles?.collect {
-//                        println(it.name)
-//                    }
-                }
-
-
+            miraiLogger.info("执行代码·")
+          val mList: MutableList<String>? = BotGroupFile.getGroupAllFiles(event.bot,event.group.id)
+            mList!!.forEach { i ->
+                miraiLogger.info("文件:$i")
             }
 
 
