@@ -10,6 +10,7 @@ import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.utils.info
+import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.Echo
 import wxgj.tinasproutrobot.mirai.event.EventHost
 
@@ -28,6 +29,7 @@ class PluginMain : KotlinPlugin(
 
     @OptIn(ConsoleFrontEndImplementation::class)
     override fun onEnable() {
+        TinaSproutRobotPluginData.reload()
         logger.info { "机器人已经加载" }
         //配置文件目录 "${dataFolder.absolutePath}/"
         Echo.register();//注册命令
@@ -39,6 +41,11 @@ class PluginMain : KotlinPlugin(
                 eventChannel.registerListenerHost(EventHost)
             }
 
+    }
+
+    override fun onDisable() {
+        //保存
+        TinaSproutRobotPluginData.save()
     }
 
     companion object {

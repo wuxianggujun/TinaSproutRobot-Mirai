@@ -5,6 +5,7 @@ import net.mamoe.mirai.event.SimpleListenerHost
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.utils.MiraiLogger
+import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.event.file.BotGroupFile
 import kotlin.coroutines.CoroutineContext
 
@@ -24,6 +25,10 @@ object EventHost : SimpleListenerHost() {
         //println(event.message);
         val miraiLogger: MiraiLogger = event.bot.logger
         miraiLogger.info("QQ号:${event.bot}")
+        val groupId =TinaSproutRobotPluginData.adminMap[event.bot.id]
+        miraiLogger.info("机器人$groupId");
+
+        TinaSproutRobotPluginData.adminMap[event.bot.id] = event.group.id
         if (event.message.contentToString() == "群文件") {
             miraiLogger.info("执行代码·")
             val mList: MutableList<String>? = BotGroupFile.getGroupAllFiles(event.bot, event.group.id)
