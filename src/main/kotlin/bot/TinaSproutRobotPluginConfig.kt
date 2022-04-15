@@ -3,9 +3,15 @@ package wxgj.tinasproutrobot.mirai.bot
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.value
 
-object TinaSproutRobotPluginConfig :AutoSavePluginConfig("TinaSproutRobotPluginConfig") {
+object TinaSproutRobotPluginConfig : AutoSavePluginConfig("TinaSproutRobotPluginConfig") {
+    val min: Int by value(60)
+    val max: Int by value(6000)
+    val timer: Int by value(10)
+
+    val clearTimer: String by value("00:00")
+
     //机器人主人
-    val master:Long by value(3344207732)
+    val master: Long by value(3344207732)
 
     /**
      * 机器人管理员，只开放某些权限
@@ -13,7 +19,7 @@ object TinaSproutRobotPluginConfig :AutoSavePluginConfig("TinaSproutRobotPluginC
      * Long:机器人QQ号
      * Long:管理员QQ号
      */
-    val adminMap:MutableMap<Long,Long> by value()
+    val adminMap: MutableMap<Long, Long> by value()
 
     /**
      * Auto matic response map
@@ -21,5 +27,5 @@ object TinaSproutRobotPluginConfig :AutoSavePluginConfig("TinaSproutRobotPluginC
      * Long:群号
      * Boolean:是，否
      */
-    val autoMaticResponseMap:MutableMap<Long,Boolean> by value()
+    var autoMaticResponseMap: MutableMap<Long, Boolean> by value()
 }

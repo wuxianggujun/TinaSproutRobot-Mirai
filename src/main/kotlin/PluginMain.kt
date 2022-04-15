@@ -1,7 +1,6 @@
 package wxgj.tinasproutrobot.mirai
 
 import net.mamoe.mirai.Bot
-import net.mamoe.mirai.console.ConsoleFrontEndImplementation
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -24,20 +23,16 @@ class PluginMain : KotlinPlugin(
 )
 {
 
-
-
-
-    @OptIn(ConsoleFrontEndImplementation::class)
     override fun onEnable() {
         TinaSproutRobotPluginData.reload()
         logger.info { "机器人已经加载" }
         //配置文件目录 "${dataFolder.absolutePath}/"
-        Echo.register();//注册命令
+        Echo.register()//注册命令
         GlobalEventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { (bot): BotOnlineEvent -> bot.id == 2405024938L }
             .subscribeAlways<BotOnlineEvent> {
-                val bot: Bot = this.bot;
-                val eventChannel: EventChannel<BotEvent> = bot.eventChannel;
+                val bot: Bot = this.bot
+                val eventChannel: EventChannel<BotEvent> = bot.eventChannel
                 eventChannel.registerListenerHost(EventHost)
             }
 
@@ -50,7 +45,7 @@ class PluginMain : KotlinPlugin(
 
     companion object {
         @JvmField
-        var INSTANCE = PluginMain();
+        var INSTANCE = PluginMain()
     }
 
 }
