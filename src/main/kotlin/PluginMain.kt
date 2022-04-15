@@ -20,7 +20,11 @@ class PluginMain : KotlinPlugin(
         name = "TinaSproutRobot-Mirai",
         version = "0.1.0"
     )
-) {
+)
+{
+
+
+
 
     @OptIn(ConsoleFrontEndImplementation::class)
     override fun onEnable() {

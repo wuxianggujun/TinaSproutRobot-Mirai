@@ -26,13 +26,13 @@ object EventHost : SimpleListenerHost() {
         miraiLogger.info("QQ号:${event.bot}")
         if (event.message.contentToString() == "群文件") {
             miraiLogger.info("执行代码·")
-          val mList: MutableList<String>? = BotGroupFile.getGroupAllFiles(event.bot,event.group.id)
+            val mList: MutableList<String>? = BotGroupFile.getGroupAllFiles(event.bot, event.group.id)
             mList!!.forEach { i ->
                 miraiLogger.info("文件:$i")
+                BotGroupFile.deleteFile(event.bot,event.group.id,i);
             }
-
-
         }
+
     }
 
     override fun handleException(context: CoroutineContext, exception: Throwable) {
