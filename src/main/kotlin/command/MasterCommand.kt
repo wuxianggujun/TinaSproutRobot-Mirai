@@ -58,5 +58,21 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
         config.save()
     }
 
+    @SubCommand
+    @Description("查看管理员列表")
+    suspend fun CommandSender.list() {
+        val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
+        if (config.adminMap.containsKey(bot!!.id) && !list.isNullOrEmpty()) {
+            val msg = buildString {
+                append("管理员列表\n")
+                for ((index, value) in list.withIndex()) {
+                    append("管理员:($value)\n")
+                }
+                append("\n共${list.size}位,管理员")
+            }
+            sendMessage(msg)
+        }
+        config.save()
+    }
 
 }
