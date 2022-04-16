@@ -5,6 +5,7 @@ import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.AutoSavePluginData
+import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.event.EventChannel
@@ -29,7 +30,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
     //命令列表用于统一管理，统一注册
     private lateinit var commands: List<Command>
-    private lateinit var data: List<AutoSavePluginData>
+    private lateinit var data: List<PluginData>
 
     override fun onEnable() {
         logger.info("TinaSproutBotPlugin Loaded")
@@ -41,7 +42,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
             it.reload()
         }
 
-        val eventChannel = this.globalEventChannel(coroutineContext).parentScope(this)
+        val eventChannel = this.globalEventChannel().parentScope(this)
 
         if (master == null) {
             master = TinaSproutRobotPluginConfig.master
