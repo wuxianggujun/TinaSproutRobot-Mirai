@@ -17,4 +17,5 @@ object TinaSproutRobotPluginConfig : AutoSavePluginConfig("TinaSproutRobotPlugin
 
     @ValueDescription("机器人账号")
     val roBot:Long by value(2405024938L)
+
 }

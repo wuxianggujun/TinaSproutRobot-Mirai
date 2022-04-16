@@ -5,7 +5,6 @@ import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 
 object TinaSproutRobotPluginData : AutoSavePluginData("data") {
-
     /**
      * 机器人管理员，只开放某些权限
      * Admin map
@@ -21,6 +20,7 @@ object TinaSproutRobotPluginData : AutoSavePluginData("data") {
      * Long:群号
      * Boolean:是，否
      */
+    @ValueDescription("开启自动回复")
     var autoMaticResponseMap: MutableMap<Long, Boolean> by value(mutableMapOf())
 
 //    var world: List<Map<String,String>> by value(mutableListOf<Map<String,String>>(
