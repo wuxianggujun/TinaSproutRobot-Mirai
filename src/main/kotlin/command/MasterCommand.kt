@@ -15,32 +15,6 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
 
     @SubCommand
     @Description("添加管理员")
-    suspend fun CommandSender.addAdmin(member: NormalMember) {
-        if (TinaSproutRobotPluginConfig.master != user!!.id) {
-            sendMessage("你不是我的主人！")
-            return
-        }
-        //写添加管理员到列表
-        if (TinaSproutRobotPluginConfig.master == member.id) {
-            sendMessage("主人不能添加为管理员!")
-            return
-        }
-
-        if (bot!!.id !in config.adminMap.keys) {
-            val adminList = mutableListOf<Long>()
-            adminList.add(member.id)
-            config.adminMap[bot!!.id] = adminList
-            sendMessage("创建并且添加管理员成功,主人$user")
-        } else {
-            config.adminMap.getValue(bot!!.id).add(member.id)
-            sendMessage("添加管理员成功,主人$user")
-        }
-        config.save()
-        return
-    }
-
-
-    @SubCommand
     suspend fun CommandSender.add(member: NormalMember) {
         val list:MutableList<Long> = config.adminMap.getValue(bot!!.id)
         if (config.adminMap.containsKey(bot!!.id)) {
@@ -56,7 +30,8 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
     }
 
     @SubCommand
-    suspend fun CommandSender.clear() {
+    @Description("清除管理员列表")
+    suspend fun CommandSender.clear(member: NormalMember?) {
         val list:MutableList<Long> = config.adminMap.getValue(bot!!.id)
         if (config.adminMap.containsKey(bot!!.id)&&!list.isNullOrEmpty()){
             list.clear()
