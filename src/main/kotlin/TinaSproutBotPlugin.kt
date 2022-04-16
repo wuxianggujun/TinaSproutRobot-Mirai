@@ -19,7 +19,7 @@ import wxgj.tinasproutrobot.mirai.command.MasterCommand
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
         author("WuXiangGuJun")
-        info("提娜——斯普朗")
+        info("提娜——斯普朗特")
     }) {
 
     //private lateinit var autoMaticResponseMap: MutableMap<Long, Boolean>
