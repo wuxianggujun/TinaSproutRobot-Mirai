@@ -5,7 +5,7 @@ import net.mamoe.mirai.console.command.CompositeCommand
 import net.mamoe.mirai.contact.NormalMember
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin.save
-import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
+import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 
 object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", description = "主人命令") {
 

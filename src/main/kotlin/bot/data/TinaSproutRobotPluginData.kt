@@ -1,4 +1,4 @@
-package wxgj.tinasproutrobot.mirai.bot
+package wxgj.tinasproutrobot.mirai.bot.data
 
 import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription

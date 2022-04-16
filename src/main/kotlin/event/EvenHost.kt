@@ -5,7 +5,6 @@ import net.mamoe.mirai.event.SimpleListenerHost
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.utils.MiraiLogger
-import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.event.file.BotGroupFile
 import kotlin.coroutines.CoroutineContext
 

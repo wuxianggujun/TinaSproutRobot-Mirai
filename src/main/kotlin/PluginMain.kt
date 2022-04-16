@@ -9,7 +9,7 @@ import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.utils.info
-import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
+import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.Echo
 import wxgj.tinasproutrobot.mirai.event.EventHost
 

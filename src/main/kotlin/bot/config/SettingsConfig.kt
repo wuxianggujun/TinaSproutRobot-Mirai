@@ -1,14 +1,14 @@
-package wxgj.tinasproutrobot.mirai.bot
+package wxgj.tinasproutrobot.mirai.bot.config
 
-import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ReadOnlyPluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 
-object TinaSproutRobotPluginConfig : ReadOnlyPluginConfig("Settings") {
+object SettingsConfig : ReadOnlyPluginConfig("Settings") {
     val min: Int by value(60)
     val max: Int by value(6000)
     val timer: Int by value(10)
+
     @ValueDescription(
         """
         插件权限控制设置
@@ -27,6 +27,6 @@ object TinaSproutRobotPluginConfig : ReadOnlyPluginConfig("Settings") {
     val master: Long by value(3344207732)
 
     @ValueDescription("机器人账号")
-    val roBot:Long by value(2405024938L)
+    val roBot: Long by value(2405024938L)
 
 }
