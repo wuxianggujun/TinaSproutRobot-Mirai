@@ -25,16 +25,16 @@ object EventHost : SimpleListenerHost() {
         //println(event.message);
         val miraiLogger: MiraiLogger = event.bot.logger
         miraiLogger.info("QQ号:${event.bot}")
-        val groupId =TinaSproutRobotPluginData.adminMap[event.bot.id]
-        miraiLogger.info("机器人$groupId");
+        //val groupId = TinaSproutRobotPluginData.adminMap[event.bot.id]
+        //miraiLogger.info("机器人$groupId");
 
-        TinaSproutRobotPluginData.adminMap[event.bot.id] = event.group.id
+        //TinaSproutRobotPluginData.adminMap[event.bot.id] = event.group.id
         if (event.message.contentToString() == "群文件") {
             miraiLogger.info("执行代码·")
             val mList: MutableList<String>? = BotGroupFile.getGroupAllFiles(event.bot, event.group.id)
             mList!!.forEach { i ->
                 miraiLogger.info("文件:$i")
-                BotGroupFile.deleteFile(event.bot,event.group.id,i);
+                // BotGroupFile.deleteFile(event.bot,event.group.id,i);
             }
         }
 
