@@ -1,6 +1,7 @@
 package wxgj.tinasproutrobot.mirai
 
 import net.mamoe.mirai.Bot
+import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
@@ -26,13 +27,16 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private var master: Long? = null
     private var preMessage: String = ""
     private var num: Int = 1
+    private lateinit var commands: List<Command>
 
     override fun onEnable() {
         logger.info("TinaSproutBotPlugin Loaded")
 
         TinaSproutRobotPluginConfig.reload()
         TinaSproutRobotPluginData.reload()
-        val eventChannel =this.globalEventChannel().parentScope(this)
+        commands = listOf(MasterCommand, AdminCommand)
+
+        val eventChannel = this.globalEventChannel().parentScope(this)
 
         if (master == null) {
             master = TinaSproutRobotPluginConfig.master
@@ -44,19 +48,20 @@ object TinaSproutBotPlugin : KotlinPlugin(
             .subscribeAlways<BotOnlineEvent> {
                 val bot: Bot = this.bot
                 val eventChannel: EventChannel<BotEvent> = bot.eventChannel
-                MasterCommand.register()
-                AdminCommand.register()
+                commands.forEach {
+                    it.register()
+                }
             }
 
     }
 
 
     override fun onDisable() {
-
         TinaSproutRobotPluginConfig.save()
         TinaSproutRobotPluginData.save()
-        MasterCommand.unregister()
-        AdminCommand.unregister()
+        commands.forEach {
+            it.unregister()
+        }
         super.onDisable()
     }
 
