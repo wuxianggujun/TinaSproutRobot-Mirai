@@ -32,13 +32,14 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
         TinaSproutRobotPluginConfig.reload()
         TinaSproutRobotPluginData.reload()
+        val eventChannel =this.globalEventChannel().parentScope(this)
 
         if (master == null) {
             master = TinaSproutRobotPluginConfig.master
         }
         logger.info("主人：$master")
 
-        this.globalEventChannel().filterIsInstance(BotOnlineEvent::class.java)
+        eventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { (bot): BotOnlineEvent -> bot.id == 2405024938L }
             .subscribeAlways<BotOnlineEvent> {
                 val bot: Bot = this.bot
