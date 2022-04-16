@@ -2,8 +2,9 @@ package wxgj.tinasproutrobot.mirai.bot
 
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
+import net.mamoe.mirai.console.data.ReadOnlyPluginData
 
-class MainBot {
+class MainBot :ReadOnlyPluginData(""){
 
 //    constructor(
 //        val bot:Bot = BotFactory.newBot(123456789L,"123456789"){

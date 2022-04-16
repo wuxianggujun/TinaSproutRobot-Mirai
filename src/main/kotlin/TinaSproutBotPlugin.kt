@@ -4,9 +4,9 @@ import net.mamoe.mirai.Bot
 import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
+import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
-import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
@@ -26,16 +26,22 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private var master: Long? = null
     private var preMessage: String = ""
     private var num: Int = 1
+
+    //命令列表用于统一管理，统一注册
     private lateinit var commands: List<Command>
+    private lateinit var data: List<AutoSavePluginData>
 
     override fun onEnable() {
         logger.info("TinaSproutBotPlugin Loaded")
 
-        TinaSproutRobotPluginConfig.reload()
-        TinaSproutRobotPluginData.reload()
+        data = listOf(TinaSproutRobotPluginConfig, TinaSproutRobotPluginData)
         commands = listOf(MasterCommand, AdminCommand)
 
-        val eventChannel = this.globalEventChannel().parentScope(this)
+        data.forEach {
+            it.reload()
+        }
+
+        val eventChannel = this.globalEventChannel(coroutineContext).parentScope(this)
 
         if (master == null) {
             master = TinaSproutRobotPluginConfig.master
@@ -56,8 +62,9 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
 
     override fun onDisable() {
-        TinaSproutRobotPluginConfig.save()
-        TinaSproutRobotPluginData.save()
+        data.forEach {
+            it.save()
+        }
         commands.forEach {
             it.unregister()
         }
