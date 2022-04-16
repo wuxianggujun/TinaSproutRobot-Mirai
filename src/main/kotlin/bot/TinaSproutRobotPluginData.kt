@@ -13,7 +13,7 @@ object TinaSproutRobotPluginData : AutoSavePluginData("data") {
      * Long:管理员QQ号
      */
     @ValueDescription("管理员列表")
-    val adminMap: MutableMap<Long, MutableList<Long>> by value()
+    var adminMap:MutableMap<Long, MutableList<Long>> by value(mutableMapOf<Long,MutableList<Long>>())
 
     /**
      * Auto matic response map
@@ -22,4 +22,9 @@ object TinaSproutRobotPluginData : AutoSavePluginData("data") {
      * Boolean:是，否
      */
     var autoMaticResponseMap: MutableMap<Long, Boolean> by value(mutableMapOf())
+
+    var world: List<Map<String,String>> by value(mutableListOf<Map<String,String>>(
+        mapOf("卧底词条" to "玩家词条")
+    ))
+
 }
