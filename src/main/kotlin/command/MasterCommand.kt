@@ -5,7 +5,6 @@ import net.mamoe.mirai.console.command.CompositeCommand
 import net.mamoe.mirai.contact.NormalMember
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin.save
-import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginConfig
 import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
 
 object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", description = "主人命令") {
@@ -16,27 +15,40 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
     @SubCommand
     @Description("添加管理员")
     suspend fun CommandSender.add(member: NormalMember) {
-        val list:MutableList<Long> = config.adminMap.getValue(bot!!.id)
+        val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
         if (config.adminMap.containsKey(bot!!.id)) {
             list.add(member.id)
             config.adminMap[bot!!.id] = list
-            logger.info("已经存在,但还是添加成功")
-        }else{
+            sendMessage("${member.id}添加成功")
+        } else {
             list.add(member.id)
             config.adminMap[bot!!.id] = list
             logger.info("添加成功")
+            sendMessage("${member.id}添加成功")
         }
         config.save()
     }
 
     @SubCommand
-    @Description("清除管理员列表")
-    suspend fun CommandSender.clear(member: NormalMember?) {
-        val list:MutableList<Long> = config.adminMap.getValue(bot!!.id)
-        if (config.adminMap.containsKey(bot!!.id)&&!list.isNullOrEmpty()){
+    @Description("清除全部管理员")
+    suspend fun CommandSender.clear() {
+        val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
+        if (config.adminMap.containsKey(bot!!.id) && !list.isNullOrEmpty()) {
             list.clear()
             config.adminMap[bot!!.id] = list
-            logger.info("清除成功")
+            sendMessage("${list.size}位,清除成功！")
+        }
+        config.save()
+    }
+
+    @SubCommand
+    @Description("清除管理员")
+    suspend fun CommandSender.clear(member: NormalMember) {
+        val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
+        if (config.adminMap.containsKey(bot!!.id) && !list.isNullOrEmpty()) {
+            list.remove(member.id)
+            config.adminMap[bot!!.id] = list
+            sendMessage("已经删除${member.id}管理员")
         }
         config.save()
     }
