@@ -9,6 +9,7 @@ import net.mamoe.mirai.console.permission.AbstractPermitteeId
 import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionId
 import net.mamoe.mirai.console.permission.PermissionService
+import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.hasPermission
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.console.permission.PermitteeId.Companion.permitteeId
@@ -22,9 +23,6 @@ import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.globalEventChannel
-import net.mamoe.mirai.message.data.MessageSource.Key.quote
-import net.mamoe.mirai.message.data.time
-import net.mamoe.mirai.message.nextMessage
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand
@@ -61,9 +59,15 @@ object TinaSproutBotPlugin : KotlinPlugin(
             it.register()
         }
         adminPermission = PermissionService.INSTANCE.register(
-            PermissionId(name,"admin"),"Admin Permission"
+            PermissionId(name, "admin"), "Admin Permission"
         )
         //AbstractPermitteeId.AnyContact.permit(MasterCommand.permission)
+// 授予权限
+        try {
+            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
+        } catch (e: Exception) {
+            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
+        }
 
         val eventChannel = this.globalEventChannel().parentScope(this)
 
@@ -78,14 +82,14 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val bot: Bot = this.bot
                 val botEvent: EventChannel<BotEvent> = bot.eventChannel
                 botEvent.subscribeAlways<GroupMessageEvent> {
-                    val nextMsg = nextMessage()
-                    //判断发送时间
-                    if (nextMsg.time - time < 60) {
-                        group.sendMessage(message.quote() + "你好快啊")
-                    }
-                    if (checkPermission(sender)){
-                        logger.info("我权限比较大哈")
-                    }
+//                    val nextMsg = nextMessage()
+//                    //判断发送时间
+//                    if (nextMsg.time - time < 60) {
+//                        group.sendMessage(message.quote() + "你好快啊")
+//                    }
+//                    if (checkPermission(sender)) {
+//                        logger.info("我权限比较大哈")
+//                    }
                     logger.info("草：$message")
                 }
             }
@@ -118,6 +122,14 @@ object TinaSproutBotPlugin : KotlinPlugin(
     }
 
     override fun onDisable() {
+
+        // 撤销权限
+        try {
+            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
+        } catch (e: Exception) {
+            logger.warning("无法自动撤销权限，请自行使用权限管理来撤销权限")
+        }
+
         data.forEach {
             it.save()
         }
