@@ -16,7 +16,6 @@ import wxgj.tinasproutrobot.mirai.bot.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand
 import wxgj.tinasproutrobot.mirai.command.MasterCommand
 
-@OptIn(ConsoleExperimentalApi::class)
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
         author("WuXiangGuJun")
@@ -44,7 +43,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
         logger.info("主人：$master")
 
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
-            .filter { (bot): BotOnlineEvent -> bot.id == 2405024938L }
+            .filter { (bot): BotOnlineEvent -> bot.id == TinaSproutRobotPluginConfig.roBot }
             .subscribeAlways<BotOnlineEvent> {
                 val bot: Bot = this.bot
                 val eventChannel: EventChannel<BotEvent> = bot.eventChannel
