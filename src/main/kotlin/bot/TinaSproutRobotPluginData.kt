@@ -23,8 +23,8 @@ object TinaSproutRobotPluginData : AutoSavePluginData("data") {
      */
     var autoMaticResponseMap: MutableMap<Long, Boolean> by value(mutableMapOf())
 
-    var world: List<Map<String,String>> by value(mutableListOf<Map<String,String>>(
-        mapOf("卧底词条" to "玩家词条")
-    ))
+//    var world: List<Map<String,String>> by value(mutableListOf<Map<String,String>>(
+//        mapOf("卧底词条" to "玩家词条")
+//    ))
 
 }

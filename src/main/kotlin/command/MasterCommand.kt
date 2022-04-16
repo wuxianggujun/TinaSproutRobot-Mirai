@@ -17,9 +17,14 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
     suspend fun CommandSender.add(member: NormalMember) {
         val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
         if (config.adminMap.containsKey(bot!!.id)) {
-            list.add(member.id)
-            config.adminMap[bot!!.id] = list
-            sendMessage("${member.id}添加成功")
+            //判断管理员列表是否有指定元素，有就返回true也就是已经添加了
+            if (list.contains(member.id)) {
+                sendMessage("${member.id}已存在")
+            } else {
+                list.add(member.id)
+                config.adminMap[bot!!.id] = list
+                sendMessage("${member.id}添加成功")
+            }
         } else {
             list.add(member.id)
             config.adminMap[bot!!.id] = list
@@ -34,9 +39,9 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
     suspend fun CommandSender.clear() {
         val list: MutableList<Long> = config.adminMap.getValue(bot!!.id)
         if (config.adminMap.containsKey(bot!!.id) && !list.isNullOrEmpty()) {
+            sendMessage("${list.size}位,清除成功！")
             list.clear()
             config.adminMap[bot!!.id] = list
-            sendMessage("${list.size}位,清除成功！")
         }
         config.save()
     }
