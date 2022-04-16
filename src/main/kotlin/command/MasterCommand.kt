@@ -72,7 +72,6 @@ object MasterCommand : CompositeCommand(TinaSproutBotPlugin, "master", descripti
             }
             sendMessage(msg)
         }
-        config.save()
     }
 
 }
