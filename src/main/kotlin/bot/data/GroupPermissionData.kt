@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 
-object PermissionPluginData : AutoSavePluginData("PermissionData") {
+object GroupPermissionData : AutoSavePluginData("GroupPermissionData") {
     @ValueDescription("组")
     val group: MutableMap<String, MutableList<String>> by value(mutableMapOf())
 
