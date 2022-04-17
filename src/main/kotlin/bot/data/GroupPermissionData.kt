@@ -13,4 +13,8 @@ object GroupPermissionData : AutoSavePluginData("GroupPermissionData") {
 
     @ValueDescription("群欢迎消息")
     val groupWelcomeMessage: MutableMap<String, String> by value(mutableMapOf())
+
+    @ValueDescription("一个数组")
+    val permission = emptyArray<String>()
+
 }

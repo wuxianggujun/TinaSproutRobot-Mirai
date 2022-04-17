@@ -9,21 +9,17 @@ import net.mamoe.mirai.console.permission.AbstractPermitteeId
 import net.mamoe.mirai.console.permission.PermissionId
 import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
-import net.mamoe.mirai.console.permission.PermissionService.Companion.getPermittedPermissions
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
-import net.mamoe.mirai.console.permission.PermitteeId.Companion.permitteeId
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
+import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.MemberJoinEvent
 import net.mamoe.mirai.event.globalEventChannel
-import net.mamoe.mirai.message.data.*
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
-import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.groupWelcomeMessage
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand
 import wxgj.tinasproutrobot.mirai.command.GroupCommand
@@ -49,6 +45,9 @@ object TinaSproutBotPlugin : KotlinPlugin(
         data = listOf(SettingsConfig, TinaSproutRobotPluginData, GroupPermissionData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
 
+        val PERMISSIONS_GROUP_WELCOME by lazy {
+            PermissionService.INSTANCE.register(PermissionId(name, "group.welcome"), "群欢迎语")
+        }
         data.forEach {
             it.reload()
         }
@@ -75,33 +74,42 @@ object TinaSproutBotPlugin : KotlinPlugin(
             master = SettingsConfig.master
         }
         logger.info("主人：$master")
+        logger.info("名字${this.name}")
 
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { event: BotOnlineEvent -> event.bot.id == SettingsConfig.roBot }
             .subscribeAlways<BotOnlineEvent> {
                 val bot: Bot = this.bot
                 val botEvent: EventChannel<BotEvent> = bot.eventChannel
-
+                //用户权限
                 botEvent.subscribeAlways<GroupMessageEvent> {
-                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
-                    logger.info("为什么没有用")
-                    if (hasPerm && message.content == "#r") {
+                    //if (it.member.id == master) {
 
-                        group.sendMessage(QuoteReply(source) + Dice((1..6).random()))
-                    }
+                    //}
                 }
 
-                botEvent.subscribeAlways<MemberJoinEvent> {
-                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
-                    if (hasPerm && groupWelcomeMessage.isNotEmpty()) {
-                        val builder = MessageChainBuilder()
-                        builder.add(At(user))
-                        builder.add("Hello Mirai :)")
-                        val msg = builder.build() // builder.asMessageChain() 也可以
-                        group.sendMessage(msg)
 
-                    }
-                }
+//                botEvent.subscribeAlways<GroupMessageEvent> {
+//                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
+//                    logger.info("为什么没有用")
+//                    if (hasPerm && message.content == "#r") {
+//
+//                        group.sendMessage(QuoteReply(source) + Dice((1..6).random()))
+//                    }
+//                }
+//
+//                botEvent.subscribeAlways<MemberJoinEvent> {
+//                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
+//                    if (hasPerm && groupWelcomeMessage.isNotEmpty()) {
+//                        val builder = MessageChainBuilder()
+//                        builder.add(At(user))
+//                        builder.add("Hello Mirai :)")
+//                        val msg = builder.build() // builder.asMessageChain() 也可以
+//                        group.sendMessage(msg)
+//
+//                    }
+//                }
+
 
             }
 
