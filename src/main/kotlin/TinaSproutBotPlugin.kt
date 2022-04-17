@@ -6,14 +6,10 @@ import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.AbstractPermitteeId
-import net.mamoe.mirai.console.permission.Permission
-import net.mamoe.mirai.console.permission.PermissionId
-import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
-import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
@@ -25,6 +21,7 @@ import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand
 import wxgj.tinasproutrobot.mirai.command.GroupCommand
 import wxgj.tinasproutrobot.mirai.command.MasterCommand
+import wxgj.tinasproutrobot.mirai.command.WelcomeCommand
 
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
@@ -41,13 +38,12 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var commands: List<Command>
     private lateinit var data: List<PluginData>
 
-    private lateinit var adminPermission: Permission
+    // private lateinit var adminPermission: Permission
 
     override fun onEnable() {
         logger.info("TinaSproutBotPlugin Loaded")
-
         data = listOf(SettingsConfig, TinaSproutRobotPluginData, GroupPermissionData)
-        commands = listOf(MasterCommand, AdminCommand,GroupCommand)
+        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
 
         data.forEach {
             it.reload()
@@ -56,9 +52,9 @@ object TinaSproutBotPlugin : KotlinPlugin(
         commands.forEach {
             it.register()
         }
-        adminPermission = PermissionService.INSTANCE.register(
-            PermissionId(name, "admin"), "Admin Permission"
-        )
+//        adminPermission = PermissionService.INSTANCE.register(
+//            PermissionId(name, "admin"), "Admin Permission"
+//        )
         // 授予权限
         try {
             AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
