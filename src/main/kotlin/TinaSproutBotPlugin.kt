@@ -23,6 +23,7 @@ import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand
+import wxgj.tinasproutrobot.mirai.command.GroupCommand
 import wxgj.tinasproutrobot.mirai.command.MasterCommand
 
 object TinaSproutBotPlugin : KotlinPlugin(
@@ -46,7 +47,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
         logger.info("TinaSproutBotPlugin Loaded")
 
         data = listOf(SettingsConfig, TinaSproutRobotPluginData, GroupPermissionData)
-        commands = listOf(MasterCommand, AdminCommand)
+        commands = listOf(MasterCommand, AdminCommand,GroupCommand)
 
         data.forEach {
             it.reload()
@@ -58,7 +59,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
         adminPermission = PermissionService.INSTANCE.register(
             PermissionId(name, "admin"), "Admin Permission"
         )
-// 授予权限
+        // 授予权限
         try {
             AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
         } catch (e: Exception) {
