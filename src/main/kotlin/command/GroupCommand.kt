@@ -46,12 +46,18 @@ object GroupCommand : CompositeCommand(TinaSproutBotPlugin, "group", description
                 if (c == "") failMsg += "$it, "
                 return@map c
             }.filter { it.isNotEmpty() })
-            val perm = permissionData.groupPerm[groupName]?.map { PermissionId.parseFromString(it) }
+            val perm = permissionData.groupPerm[groupName]?.map {
+                sendMessage("groupPerm:${it}")
+
+                PermissionId.parseFromString(it) }
             if (perm != null){
                 PermissionService.INSTANCE.getRegisteredPermissions().forEach {p ->
+                    sendMessage("getRegisteredPermissions:${p}")
                     if (perm.contains(p.id)){
                         permissionData.group.filterKeys { g -> g == groupName }.values.forEach { c ->
-                            c.forEach { v -> AbstractPermitteeId.parseFromString(v).permit(p) }
+                            c.forEach { v ->
+                                sendMessage("values:${v}")
+                                AbstractPermitteeId.parseFromString(v).permit(p) }
                         }
                     }
                 }

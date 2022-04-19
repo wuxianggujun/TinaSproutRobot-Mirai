@@ -58,15 +58,15 @@ object TinaSproutBotPlugin : KotlinPlugin(
 //        adminPermission = PermissionService.INSTANCE.register(
 //            PermissionId(name, "admin"), "Admin Permission"
 //        )
-        // 授予权限
-        try {
-            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
-        } catch (e: Exception) {
-            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
-        }
+//        // 授予权限
+//        try {
+//            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
+//        } catch (e: Exception) {
+//            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
+//        }
 
-        val gwp = PermissionId("group", "welcome.message")
-        PermissionService.INSTANCE.register(gwp, "群欢迎你")
+//        val gwp = PermissionId("group", "welcome.message")
+//        PermissionService.INSTANCE.register(gwp, "群欢迎你")
 
         val eventChannel = this.globalEventChannel().parentScope(this)
 
@@ -142,12 +142,12 @@ object TinaSproutBotPlugin : KotlinPlugin(
 //    }
 
     override fun onDisable() {
-        // 撤销权限
-        try {
-            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
-        } catch (e: Exception) {
-            logger.warning("无法自动撤销权限，请自行使用权限管理来撤销权限")
-        }
+//        // 撤销权限
+//        try {
+//            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
+//        } catch (e: Exception) {
+//            logger.warning("无法自动撤销权限，请自行使用权限管理来撤销权限")
+//        }
 
         data.forEach {
             it.save()
