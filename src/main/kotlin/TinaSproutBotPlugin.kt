@@ -116,31 +116,6 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
     }
 
-//    fun checkPermission(sender: Member): Boolean {
-//        when (SettingsConfig.permitMode) {
-//            0 -> {
-//                return true
-//            }
-//            1 -> {
-//                if (SettingsConfig.master == sender.id)
-//                    return true
-//            }
-//            2 -> {
-//                if (SettingsConfig.master == sender.id)
-//                    return true
-//                return sender.isOperator()
-//            }
-//            3 -> {
-//                return sender.permitteeId.hasPermission(adminPermission)
-//
-//            }
-//            else -> {
-//                logger.error("权限设置信息错误，请检查权限模式设置")
-//            }
-//        }
-//        return false
-//    }
-
     override fun onDisable() {
 //        // 撤销权限
 //        try {
