@@ -3,7 +3,6 @@ package wxgj.tinasproutrobot.mirai.command
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.contact.User
-import wxgj.tinasproutrobot.mirai.PluginMain
 
 object Echo : SimpleCommand(PluginMain.INSTANCE, primaryName = "echo", secondaryNames = arrayOf("复读"), description = "复读消息") {
     @Handler//标记这是指令处理器 //函数名随意

@@ -2,11 +2,15 @@ package wxgj.tinasproutrobot.mirai.command
 
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.CompositeCommand
+import net.mamoe.mirai.console.data.AutoSavePluginData
+import net.mamoe.mirai.console.data.ValueDescription
+import net.mamoe.mirai.console.data.value
 import net.mamoe.mirai.console.permission.AbstractPermitteeId
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.contact.NormalMember
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
+import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 
 
@@ -46,5 +50,12 @@ object AdminCommand : CompositeCommand(
     }
 
 
+
+}
+
+object AdminPermissionsData : AutoSavePluginData("AdminPermissionsData"){
+
+    @ValueDescription("管理员列表")
+    val adminPermMap:MutableMap<Long,MutableList<Long>> by value(mutableMapOf())
 
 }

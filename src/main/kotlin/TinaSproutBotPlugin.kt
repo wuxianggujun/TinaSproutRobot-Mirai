@@ -6,6 +6,7 @@ import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.AbstractPermitteeId
+import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionId
 import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
@@ -38,16 +39,13 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var commands: List<Command>
     private lateinit var data: List<PluginData>
 
-    // private lateinit var adminPermission: Permission
+     private lateinit var adminPermission: Permission
 
     override fun onEnable() {
         logger.info("TinaSproutBotPlugin Loaded")
         data = listOf(SettingsConfig, TinaSproutRobotPluginData, GroupPermissionData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
 
-        val PERMISSIONS_GROUP_WELCOME by lazy {
-            PermissionService.INSTANCE.register(PermissionId(name, "group.welcome"), "群欢迎语")
-        }
         data.forEach {
             it.reload()
         }
@@ -55,18 +53,15 @@ object TinaSproutBotPlugin : KotlinPlugin(
         commands.forEach {
             it.register()
         }
-//        adminPermission = PermissionService.INSTANCE.register(
-//            PermissionId(name, "admin"), "Admin Permission"
-//        )
+        adminPermission = PermissionService.INSTANCE.register(
+            PermissionId(name, "admin"), "缇娜——管理员权限"
+        )
 //        // 授予权限
 //        try {
 //            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
 //        } catch (e: Exception) {
 //            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
 //        }
-
-//        val gwp = PermissionId("group", "welcome.message")
-//        PermissionService.INSTANCE.register(gwp, "群欢迎你")
 
         val eventChannel = this.globalEventChannel().parentScope(this)
 
@@ -83,32 +78,8 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val botEvent: EventChannel<BotEvent> = bot.eventChannel
                 //用户权限
                 botEvent.subscribeAlways<GroupMessageEvent> {
-                    //if (it.member.id == master) {
 
-                    //}
                 }
-
-
-//                botEvent.subscribeAlways<GroupMessageEvent> {
-//                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
-//                    logger.info("为什么没有用")
-//                    if (hasPerm && message.content == "#r") {
-//
-//                        group.sendMessage(QuoteReply(source) + Dice((1..6).random()))
-//                    }
-//                }
-//
-//                botEvent.subscribeAlways<MemberJoinEvent> {
-//                    val hasPerm = group.permitteeId.getPermittedPermissions().any { it.id == gwp }
-//                    if (hasPerm && groupWelcomeMessage.isNotEmpty()) {
-//                        val builder = MessageChainBuilder()
-//                        builder.add(At(user))
-//                        builder.add("Hello Mirai :)")
-//                        val msg = builder.build() // builder.asMessageChain() 也可以
-//                        group.sendMessage(msg)
-//
-//                    }
-//                }
 
 
             }
@@ -117,7 +88,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
     }
 
     override fun onDisable() {
-//        // 撤销权限
+//        // 撤销权限 如果权限里面有*那么撤销不了
 //        try {
 //            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
 //        } catch (e: Exception) {
