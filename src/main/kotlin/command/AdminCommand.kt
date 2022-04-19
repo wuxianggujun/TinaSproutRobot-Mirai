@@ -6,6 +6,8 @@ import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 import net.mamoe.mirai.console.permission.AbstractPermitteeId
+import net.mamoe.mirai.console.permission.PermissionId
+import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.contact.NormalMember
@@ -20,8 +22,7 @@ object AdminCommand : CompositeCommand(
     description = "管理员指令"
 ) {
 
-    private val adminData = TinaSproutRobotPluginData
-
+    private val adminData = AdminPermissionsData
 
     @SubCommand("list", "查看列表")
     suspend fun CommandSender.list() {
@@ -31,14 +32,33 @@ object AdminCommand : CompositeCommand(
 
     @SubCommand("add", "添加")
     suspend fun CommandSender.add(member: NormalMember) {
-        AbstractPermitteeId.parseFromString("m864358403.3548346511").permit(AdminCommand.permission)
-        //TinaSproutBotPlugin.logger.info("解析的权限：${PermissionId.parseFromString(" aide ")}")
+        val group = adminData.grouplist
+        if (group != null) {
+            if (!group.containsKey(member.group.id)) {
+                group[member.group.id] = false
+                return
+            }
+            PermissionService.INSTANCE.getRegisteredPermissions().forEach { P ->
+                TinaSproutBotPlugin.logger.info("注册的权限:${P.id}")
+                if (P.id == AdminCommand.permission.id) {
+                    adminData.adminPermMap.filter { (key, value) ->
+                        key == member.group.id
+                    }.map {
+                        it.value.forEach { v ->
+                            AbstractPermitteeId.parseFromString(v.toString()).permit(AdminCommand.permission)
+                        }
+                    }
+                }
+            }
+
+        }
+        //AbstractPermitteeId.parseFromString("m864358403.3548346511").permit(AdminCommand.permission)
 
     }
+
     @SubCommand("add")
     suspend fun CommandSender.add() {
         AbstractPermitteeId.parseFromString("m864358403.3548346511").permit(AdminCommand.permission)
-        //TinaSproutBotPlugin.logger.info("解析的权限：${PermissionId.parseFromString(" aide ")}")
 
     }
 
@@ -50,12 +70,14 @@ object AdminCommand : CompositeCommand(
     }
 
 
-
 }
 
-object AdminPermissionsData : AutoSavePluginData("AdminPermissionsData"){
+object AdminPermissionsData : AutoSavePluginData("AdminPermissionsData") {
+    //    boolean 表示是否在本群开启机器人
+    @ValueDescription("群列表")
+    val grouplist: MutableMap<Long, Boolean> by value(mutableMapOf())
 
     @ValueDescription("管理员列表")
-    val adminPermMap:MutableMap<Long,MutableList<Long>> by value(mutableMapOf())
+    val adminPermMap: MutableMap<Long, MutableList<Long>> by value(mutableMapOf())
 
 }

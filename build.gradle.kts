@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     // val kotlinVersion = "1.5.32"
     val kotlinVersion = "1.6.10"
@@ -30,6 +32,7 @@ dependencies {
 //    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.5")
 
     implementation(fileTree(mapOf("dir" to "src/main/resources/libs", "include" to listOf("*.jar"))))
+    implementation(kotlin("stdlib-jdk8"))
 
 }
 
@@ -37,4 +40,12 @@ dependencies {
 // config JVM target to 1.8 for kotlin compilation tasks
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
