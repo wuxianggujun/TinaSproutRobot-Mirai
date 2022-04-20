@@ -14,6 +14,7 @@ import net.mamoe.mirai.contact.NormalMember
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
+import wxgj.tinasproutrobot.mirai.command.AdminCommand.add
 
 
 object AdminCommand : CompositeCommand(
@@ -36,16 +37,44 @@ object AdminCommand : CompositeCommand(
         if (group != null) {
             if (!group.containsKey(member.group.id)) {
                 group[member.group.id] = false
-                return
             }
+//            adminData.adminPermMap.getValue(member.group.id).forEach {
+//                if (it != member.id) {
+//                    //adminData.adminPermMap.getValue(member.group.id).add(member.id)
+//                    TinaSproutBotPlugin.logger.info("添加成功到list")
+//                }
+//            }
+//
+            if (adminData.adminPermMap.containsKey(member.group.id)) {
+                val groupAdminList = adminData.adminPermMap.get(member.group.id)
+                if (!groupAdminList!!.contains(member.id)) {
+                    groupAdminList.add(member.id)
+                }
+            } else {
+                val adminList = mutableListOf<Long>()
+                adminList.add(member.id)
+                adminData.adminPermMap[member.group.id] = adminList
+                TinaSproutBotPlugin.logger.info("添加到管理员列表")
+            }
+
+
             PermissionService.INSTANCE.getRegisteredPermissions().forEach { P ->
                 TinaSproutBotPlugin.logger.info("注册的权限:${P.id}")
                 if (P.id == AdminCommand.permission.id) {
+                    TinaSproutBotPlugin.logger.info(":${P.id}权限等于${permission.id}")
                     adminData.adminPermMap.filter { (key, value) ->
                         key == member.group.id
                     }.map {
                         it.value.forEach { v ->
-                            AbstractPermitteeId.parseFromString(v.toString()).permit(AdminCommand.permission)
+                            val sb = StringBuilder()
+                            sb.append("m")
+                            sb.append(it.key)
+                            sb.append(".")
+                            sb.append(v)
+                            TinaSproutBotPlugin.logger.info("SB：${sb.toString()}")
+                            TinaSproutBotPlugin.logger.info("列表里面的V：${v.toString()}")
+
+                            AbstractPermitteeId.parseFromString(sb.toString()).permit(AdminCommand.permission)
                         }
                     }
                 }

@@ -57,7 +57,8 @@ object GroupCommand : CompositeCommand(TinaSproutBotPlugin, "group", description
                         permissionData.group.filterKeys { g -> g == groupName }.values.forEach { c ->
                             c.forEach { v ->
                                 sendMessage("values:${v}")
-                                AbstractPermitteeId.parseFromString(v).permit(p) }
+                                AbstractPermitteeId.parseFromString(v).permit(p)
+                            }
                         }
                     }
                 }
