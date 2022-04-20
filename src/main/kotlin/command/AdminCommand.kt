@@ -10,11 +10,13 @@ import net.mamoe.mirai.console.permission.PermissionId
 import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
+import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand.add
+import wxgj.tinasproutrobot.mirai.command.interf.CommandPermInterface
 
 
 object AdminCommand : CompositeCommand(
@@ -78,18 +80,13 @@ object AdminCommand : CompositeCommand(
 
     }
 
-    @SubCommand("add")
-    suspend fun CommandSender.add() {
-        AbstractPermitteeId.parseFromString("m864358403.3548346511").permit(AdminCommand.permission)
-
-    }
-
 
     @SubCommand("clear")
     suspend fun CommandSender.clear() {
         sendMessage("你在干哈")
         AbstractPermitteeId.parseFromString("m864358403.3548346511").cancel(AdminCommand.permission, true)
     }
+
 
 
 }
