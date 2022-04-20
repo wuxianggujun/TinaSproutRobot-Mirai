@@ -38,13 +38,6 @@ object AdminCommand : CompositeCommand(
             if (!group.containsKey(member.group.id)) {
                 group[member.group.id] = false
             }
-//            adminData.adminPermMap.getValue(member.group.id).forEach {
-//                if (it != member.id) {
-//                    //adminData.adminPermMap.getValue(member.group.id).add(member.id)
-//                    TinaSproutBotPlugin.logger.info("添加成功到list")
-//                }
-//            }
-//
             if (adminData.adminPermMap.containsKey(member.group.id)) {
                 val groupAdminList = adminData.adminPermMap.get(member.group.id)
                 if (!groupAdminList!!.contains(member.id)) {
