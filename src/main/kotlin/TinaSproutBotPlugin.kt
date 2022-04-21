@@ -1,11 +1,14 @@
 package wxgj.tinasproutrobot.mirai
 
+import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.*
+import net.mamoe.mirai.console.permission.PermissionService.Companion.testPermission
+import net.mamoe.mirai.console.permission.PermitteeId.Companion.permitteeId
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
@@ -58,27 +61,34 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val currentBot: Bot = it.bot
                 val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
 
+                this.launch {
+
+                }
+                //检查群有没有欢迎新用户权限，有的话就欢迎新用户
+                currentBot.groups.filter { currentGroup ->
+                    welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
+                }.forEach {
+
+                }
+
 
             }
 
+    }
 
+        override fun onDisable() {
+
+            data.forEach {
+                it.save()
+            }
+            commands.forEach {
+                it.unregister()
+            }
+            super.onDisable()
+        }
 
 
     }
-
-    override fun onDisable() {
-
-        data.forEach {
-            it.save()
-        }
-        commands.forEach {
-            it.unregister()
-        }
-        super.onDisable()
-    }
-
-
-}
 //        // 授予权限
 //        try {
 //            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
