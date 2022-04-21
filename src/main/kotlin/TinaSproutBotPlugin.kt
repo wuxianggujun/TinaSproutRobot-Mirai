@@ -42,7 +42,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var data: List<PluginData>
 
     //群欢迎权限
-    private lateinit var welcomeJoinGroupPermission: Permission
+    lateinit var welcomeJoinGroupPermission: Permission
 
     override fun onEnable() {
         data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
