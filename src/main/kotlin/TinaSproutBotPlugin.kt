@@ -5,24 +5,19 @@ import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
-import net.mamoe.mirai.console.permission.AbstractPermitteeId
-import net.mamoe.mirai.console.permission.Permission
-import net.mamoe.mirai.console.permission.PermissionId
-import net.mamoe.mirai.console.permission.PermissionService
-import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
-import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
+import net.mamoe.mirai.console.permission.*
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.BotEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
-import net.mamoe.mirai.event.events.GroupMessageEvent
+import net.mamoe.mirai.event.events.MessagePreSendEvent
 import net.mamoe.mirai.event.globalEventChannel
+import net.mamoe.mirai.event.subscribeAlways
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
-import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.*
 
 object TinaSproutBotPlugin : KotlinPlugin(
@@ -37,41 +32,36 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var commands: List<Command>
     private lateinit var data: List<PluginData>
 
-    private lateinit var adminPermission: Permission
+    //群欢迎权限
+    private lateinit var welcomeJoinGroupPermission: Permission
 
     override fun onEnable() {
         data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
-
         data.forEach {
             it.reload()
         }
-
         commands.forEach {
             it.register()
         }
-        adminPermission = PermissionService.INSTANCE.register(
-            PermissionId(name, "admin"), "缇娜——管理员权限"
+        welcomeJoinGroupPermission = PermissionService.INSTANCE.register(
+            PermissionId(name, "WelcomeJoinGroup"), "缇娜——欢迎进群权限"
         )
 
         val eventChannel = this.globalEventChannel().parentScope(this)
+        master = SettingsConfig.master
 
-        if (master == null) {
-            master = SettingsConfig.master
-        }
-
+        //多个机器人账号登录时，只有配置文件上写的QQ才会响应
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
-            .filter { event: BotOnlineEvent -> event.bot.id == SettingsConfig.roBot }
-            .subscribeAlways<BotOnlineEvent> {
-                val bot: Bot = this.bot
-                val botEvent: EventChannel<BotEvent> = bot.eventChannel
-                //用户权限
-                botEvent.subscribeAlways<GroupMessageEvent> {
-
-                }
+            .filter { e -> e.bot.id == SettingsConfig.roBot }
+            .subscribeAlways(BotOnlineEvent::class.java) {
+                val currentBot: Bot = it.bot
+                val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
 
 
             }
+
+
 
 
     }
