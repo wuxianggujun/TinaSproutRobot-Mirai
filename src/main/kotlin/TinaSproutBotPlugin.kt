@@ -1,5 +1,6 @@
 package wxgj.tinasproutrobot.mirai
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.console.command.Command
@@ -9,11 +10,13 @@ import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.*
 import net.mamoe.mirai.console.permission.PermissionService.Companion.testPermission
 import net.mamoe.mirai.console.permission.PermitteeId.Companion.permitteeId
+import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.enable
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.BotEvent
+import net.mamoe.mirai.event.events.BotJoinGroupEvent
 import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.event.events.MessagePreSendEvent
 import net.mamoe.mirai.event.globalEventChannel
@@ -22,6 +25,9 @@ import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.command.*
+import wxgj.tinasproutrobot.mirai.event.GroupEventListener
+import java.time.LocalDateTime
+import java.util.*
 
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
@@ -60,13 +66,21 @@ object TinaSproutBotPlugin : KotlinPlugin(
             .subscribeAlways(BotOnlineEvent::class.java) {
                 val currentBot: Bot = it.bot
                 val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
+                //设置群事件监听器
+                botEventChannel.registerListenerHost(GroupEventListener)
+
+
+                this@TinaSproutBotPlugin.launch {
+
+
+                }
+
 
                 this.launch {
                     //检查群有没有欢迎新用户权限，有的话就欢迎新用户
                     currentBot.groups.filter { currentGroup ->
                         welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
                     }.forEach {
-
                     }
 
                 }
