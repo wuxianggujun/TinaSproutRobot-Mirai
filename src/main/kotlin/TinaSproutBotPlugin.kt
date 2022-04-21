@@ -1,31 +1,22 @@
 package wxgj.tinasproutrobot.mirai
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.*
-import net.mamoe.mirai.console.permission.PermissionService.Companion.testPermission
-import net.mamoe.mirai.console.permission.PermitteeId.Companion.permitteeId
-import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.enable
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
-import net.mamoe.mirai.event.EventPriority
 import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.event.globalEventChannel
-import net.mamoe.mirai.event.subscribeAlways
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.command.*
 import wxgj.tinasproutrobot.mirai.event.GroupEventListener
-import java.time.LocalDateTime
-import java.util.*
 
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
@@ -44,12 +35,13 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
     override fun onEnable() {
         data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
-        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
+        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand)
         data.forEach {
             it.reload()
         }
         commands.forEach {
-            it.register()
+            //@param override 是否覆盖重名指令.
+            it.register(true)
         }
         welcomeJoinGroupPermission = PermissionService.INSTANCE.register(
             PermissionId(name, "WelcomeJoinGroup"), "缇娜——欢迎进群权限"
@@ -65,22 +57,22 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val currentBot: Bot = it.bot
                 val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
                 //设置群事件监听器
-                //botEventChannel.registerListenerHost(GroupEventListener)
+                botEventChannel.registerListenerHost(GroupEventListener)
 
-                botEventChannel.subscribeAlways<GroupMessageEvent>(priority = EventPriority.HIGHEST) {
-                    //如果发送者是机器人主人则拦截信息
-                    if (sender.id == SettingsConfig.master) {
-                        intercept()
-                    } else {
-                        botEventChannel.registerListenerHost(GroupEventListener)
-                    }
-                }
+//                botEventChannel.subscribeAlways<GroupMessageEvent>(priority = EventPriority.HIGHEST) {
+//                    //如果发送者是机器人主人则拦截信息
+//                    if (sender.id == SettingsConfig.master) {
+//                        intercept()
+//                    } else {
+//                        botEventChannel.registerListenerHost(GroupEventListener)
+//                    }
+//                }
 
-                //居然还可以这样做
-                with(botEventChannel) {
-
-                    registerListenerHost(GroupEventListener)
-                }
+//                //居然还可以这样做
+//                with(botEventChannel) {
+//
+//                    registerListenerHost(GroupEventListener)
+//                }
 
 //                this@TinaSproutBotPlugin.launch {
 //                }

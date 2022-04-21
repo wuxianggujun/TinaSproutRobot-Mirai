@@ -14,9 +14,8 @@ object GroupEventListener : SimpleListenerHost() {
 
     private val logger = TinaSproutBotPlugin.logger
 
-
     @EventHandler(priority = EventPriority.HIGHEST)
-    suspend fun onGroupMessageEvent(event: GroupMessageEvent){
+   suspend fun onGroupMessageEvent(event: GroupMessageEvent){
         logger.info("事件被拦截了")
         //拦截事件
         //event.intercept()
