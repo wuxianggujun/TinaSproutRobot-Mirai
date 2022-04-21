@@ -20,6 +20,7 @@ import net.mamoe.mirai.event.events.BotOnlineEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.globalEventChannel
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
+import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.*
@@ -36,11 +37,10 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var commands: List<Command>
     private lateinit var data: List<PluginData>
 
-     private lateinit var adminPermission: Permission
+    private lateinit var adminPermission: Permission
 
     override fun onEnable() {
-        logger.info("TinaSproutBotPlugin Loaded")
-        data = listOf(SettingsConfig, TinaSproutRobotPluginData, GroupPermissionData,AdminPermissionsData)
+        data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand)
 
         data.forEach {
@@ -53,20 +53,12 @@ object TinaSproutBotPlugin : KotlinPlugin(
         adminPermission = PermissionService.INSTANCE.register(
             PermissionId(name, "admin"), "缇娜——管理员权限"
         )
-//        // 授予权限
-//        try {
-//            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
-//        } catch (e: Exception) {
-//            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
-//        }
 
         val eventChannel = this.globalEventChannel().parentScope(this)
 
         if (master == null) {
             master = SettingsConfig.master
         }
-        logger.info("主人：$master")
-        logger.info("名字${this.name}")
 
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { event: BotOnlineEvent -> event.bot.id == SettingsConfig.roBot }
@@ -85,12 +77,6 @@ object TinaSproutBotPlugin : KotlinPlugin(
     }
 
     override fun onDisable() {
-//        // 撤销权限 如果权限里面有*那么撤销不了
-//        try {
-//            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
-//        } catch (e: Exception) {
-//            logger.warning("无法自动撤销权限，请自行使用权限管理来撤销权限")
-//        }
 
         data.forEach {
             it.save()
@@ -103,4 +89,16 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
 
 }
+//        // 授予权限
+//        try {
+//            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
+//        } catch (e: Exception) {
+//            logger.warning("无法自动授予权限，请自行使用权限管理来授予权限")
+//        }
+//        // 撤销权限 如果权限里面有*那么撤销不了
+//        try {
+//            AbstractPermitteeId.AnyContact.cancel(AdminCommand.permission, true)
+//        } catch (e: Exception) {
+//            logger.warning("无法自动撤销权限，请自行使用权限管理来撤销权限")
+//        }
 

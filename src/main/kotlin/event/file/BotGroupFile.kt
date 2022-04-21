@@ -28,8 +28,7 @@ object BotGroupFile {
         if (mList.isNotEmpty()) mList.clear()
         try {
             val bot: Bot = uBot
-            val group: Group = bot.getGroup(gId) ?:
-            return throw GroupObjectNull("机器人不在此群聊!")
+            val group: Group = bot.getGroup(gId) ?: return throw GroupObjectNull("机器人不在此群聊!")
             // 该函数会遍历上级目录的所有文件并匹配当前文件, 因此可能会非常慢, 请不要频繁使用
             group.files.root.refreshed()
             val remoteFiles: RemoteFiles = group.files
@@ -69,7 +68,7 @@ object BotGroupFile {
                 return
             }
             println("文件删除:$name")
-            if (absoluteFile.exists()){
+            if (absoluteFile.exists()) {
                 absoluteFile.delete()
             }
         } catch (e: Exception) {
