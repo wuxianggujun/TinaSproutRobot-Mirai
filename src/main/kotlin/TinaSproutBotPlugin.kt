@@ -62,33 +62,32 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
 
                 this.launch {
+                    //检查群有没有欢迎新用户权限，有的话就欢迎新用户
+                    currentBot.groups.filter { currentGroup ->
+                        welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
+                    }.forEach {
+
+                    }
 
                 }
-                //检查群有没有欢迎新用户权限，有的话就欢迎新用户
-                currentBot.groups.filter { currentGroup ->
-                    welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
-                }.forEach {
-
-                }
-
 
             }
 
     }
 
-        override fun onDisable() {
+    override fun onDisable() {
 
-            data.forEach {
-                it.save()
-            }
-            commands.forEach {
-                it.unregister()
-            }
-            super.onDisable()
+        data.forEach {
+            it.save()
         }
-
-
+        commands.forEach {
+            it.unregister()
+        }
+        super.onDisable()
     }
+
+
+}
 //        // 授予权限
 //        try {
 //            AbstractPermitteeId.AnyContact.permit(AdminCommand.permission)
