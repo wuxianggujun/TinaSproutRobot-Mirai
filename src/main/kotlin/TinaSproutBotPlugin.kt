@@ -15,10 +15,8 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
 import net.mamoe.mirai.event.EventChannel
-import net.mamoe.mirai.event.events.BotEvent
-import net.mamoe.mirai.event.events.BotJoinGroupEvent
-import net.mamoe.mirai.event.events.BotOnlineEvent
-import net.mamoe.mirai.event.events.MessagePreSendEvent
+import net.mamoe.mirai.event.EventPriority
+import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.event.subscribeAlways
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
@@ -67,23 +65,33 @@ object TinaSproutBotPlugin : KotlinPlugin(
                 val currentBot: Bot = it.bot
                 val botEventChannel: EventChannel<BotEvent> = currentBot.eventChannel
                 //设置群事件监听器
-                botEventChannel.registerListenerHost(GroupEventListener)
+                //botEventChannel.registerListenerHost(GroupEventListener)
 
-
-                this@TinaSproutBotPlugin.launch {
-
-
-                }
-
-
-                this.launch {
-                    //检查群有没有欢迎新用户权限，有的话就欢迎新用户
-                    currentBot.groups.filter { currentGroup ->
-                        welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
-                    }.forEach {
+                botEventChannel.subscribeAlways<GroupMessageEvent>(priority = EventPriority.HIGHEST) {
+                    //如果发送者是机器人主人则拦截信息
+                    if (sender.id == SettingsConfig.master) {
+                        intercept()
+                    } else {
+                        botEventChannel.registerListenerHost(GroupEventListener)
                     }
-
                 }
+
+                //居然还可以这样做
+                with(botEventChannel) {
+
+                    registerListenerHost(GroupEventListener)
+                }
+
+//                this@TinaSproutBotPlugin.launch {
+//                }
+//                this.launch {
+//                    //检查群有没有欢迎新用户权限，有的话就欢迎新用户
+//                    currentBot.groups.filter { currentGroup ->
+//                        welcomeJoinGroupPermission.testPermission(currentGroup.permitteeId)
+//                    }.forEach {
+//                    }
+//
+//                }
 
             }
 
