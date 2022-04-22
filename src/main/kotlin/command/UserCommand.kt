@@ -1,7 +1,6 @@
 package wxgj.tinasproutrobot.mirai.command
 
 import net.mamoe.mirai.console.command.CompositeCommand
-import net.mamoe.mirai.console.command.MemberCommandSender
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
