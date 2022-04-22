@@ -30,6 +30,14 @@ dependencies {
 //
 
 //    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.5")
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation("commons-io:commons-io:2.11.0")
+    // https://mvnrepository.com/artifact/cn.hutool/hutool-all
+    implementation("cn.hutool:hutool-all:5.8.0.M3")
 
     implementation(fileTree(mapOf("dir" to "src/main/resources/libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk8"))
