@@ -6,6 +6,7 @@ import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.data.PluginData
 import net.mamoe.mirai.console.permission.*
+import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.plugin.name
@@ -17,6 +18,7 @@ import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.command.*
 import wxgj.tinasproutrobot.mirai.event.GroupEventListener
+import wxgj.tinasproutrobot.mirai.logger.TinaSproutLogger
 
 object TinaSproutBotPlugin : KotlinPlugin(
     JvmPluginDescription(id = "wxgj.tinasproutrobot.mirai", version = "1.0.0") {
@@ -43,6 +45,13 @@ object TinaSproutBotPlugin : KotlinPlugin(
             //@param override 是否覆盖重名指令.
             it.register(true)
         }
+        try {
+            //赋予任何用户都有使用help权限
+            AbstractPermitteeId.AnyUser.permit(HelpCommand.permission)
+        } catch (e: Exception) {
+            TinaSproutLogger.error("权限授予出错:$e")
+        }
+
         welcomeJoinGroupPermission = PermissionService.INSTANCE.register(
             PermissionId(name, "WelcomeJoinGroup"), "缇娜——欢迎进群权限"
         )
