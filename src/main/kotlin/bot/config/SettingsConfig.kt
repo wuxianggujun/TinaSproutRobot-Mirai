@@ -24,4 +24,7 @@ object SettingsConfig : AutoSavePluginConfig("Settings") {
     @ValueDescription("机器人账号")
     val roBot: Long by value(2405024938L)
 
+    @ValueDescription("机器人名字")
+    val botName:String by value("小缇娜")
+
 }

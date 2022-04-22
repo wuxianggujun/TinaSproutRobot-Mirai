@@ -2,6 +2,7 @@ package wxgj.tinasproutrobot.mirai.command
 
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.CompositeCommand
+import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
@@ -12,7 +13,9 @@ import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
 import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
+import net.mamoe.mirai.contact.isOperator
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
+import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.command.AdminCommand.add
@@ -87,6 +90,18 @@ object AdminCommand : CompositeCommand(
         AbstractPermitteeId.parseFromString("m864358403.3548346511").cancel(AdminCommand.permission, true)
     }
 
+    @SubCommand("禁言")
+    suspend fun MemberCommandSenderOnMessage.main(MemberTarget: Member, durationSeconds: Int) {
+        if (user.permission.isOperator()) {
+            runCatching {
+                if (durationSeconds != 0) {
+                    MemberTarget.mute(durationSeconds)
+                }
+            }.onSuccess {
+                sendMessage("您的套餐已到，请注意查收。")
+            }.onFailure { sendMessage("${SettingsConfig.botName}也想跟群主一起管理") }
+        } else sendMessage("${SettingsConfig.botName}:臣妾做不到啊！")
+    }
 
 
 }

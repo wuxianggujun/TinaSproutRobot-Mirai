@@ -46,6 +46,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
         try {
             //赋予任何用户都有使用help权限
             AbstractPermitteeId.AnyUser.permit(HelpCommand.permission)
+            AbstractPermitteeId.AnyMemberFromAnyGroup.permit(UserCommand.permission)
         } catch (e: Exception) {
             TinaSproutLogger.error("权限授予出错:$e")
         }
