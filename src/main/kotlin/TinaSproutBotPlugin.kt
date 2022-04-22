@@ -26,8 +26,6 @@ object TinaSproutBotPlugin : KotlinPlugin(
         info("提娜——斯普朗特")
     }) {
 
-    private var master: Long? = null
-
     //命令列表用于统一管理，统一注册
     private lateinit var commands: List<Command>
     private lateinit var data: List<PluginData>
@@ -57,7 +55,6 @@ object TinaSproutBotPlugin : KotlinPlugin(
         )
 
         val eventChannel = this.globalEventChannel().parentScope(this)
-        master = SettingsConfig.master
 
         //多个机器人账号登录时，只有配置文件上写的QQ才会响应
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
