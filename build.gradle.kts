@@ -38,7 +38,8 @@ dependencies {
     implementation("commons-io:commons-io:2.11.0")
     // https://mvnrepository.com/artifact/cn.hutool/hutool-all
     implementation("cn.hutool:hutool-all:5.8.0.M3")
-
+    // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
+    implementation("org.xerial:sqlite-jdbc:3.36.0.3")
     implementation(fileTree(mapOf("dir" to "src/main/resources/libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk8"))
 
