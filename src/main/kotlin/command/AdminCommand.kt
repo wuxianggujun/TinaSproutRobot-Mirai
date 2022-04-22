@@ -14,6 +14,7 @@ import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
 import net.mamoe.mirai.contact.isOperator
+import net.mamoe.mirai.message.data.At
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
@@ -92,13 +93,14 @@ object AdminCommand : CompositeCommand(
 
     @SubCommand("禁言")
     suspend fun MemberCommandSenderOnMessage.main(MemberTarget: Member, durationSeconds: Int) {
+        //先判断使用这条命令的人是不是管理员或者群主，是的话就把用户禁言,可以防止身为机器人管理员而滥用权限
         if (user.permission.isOperator()) {
             runCatching {
                 if (durationSeconds != 0) {
                     MemberTarget.mute(durationSeconds)
                 }
             }.onSuccess {
-                sendMessage("您的套餐已到，请注意查收。")
+                sendMessage("${At(MemberTarget)} 您的获得了${SettingsConfig.botName}的祝福。")
             }.onFailure { sendMessage("${SettingsConfig.botName}也想跟群主一起管理") }
         } else sendMessage("${SettingsConfig.botName}:臣妾做不到啊！")
     }

@@ -35,7 +35,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
     override fun onEnable() {
         data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
-        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand)
+        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand,UserCommand)
         data.forEach {
             it.reload()
         }
