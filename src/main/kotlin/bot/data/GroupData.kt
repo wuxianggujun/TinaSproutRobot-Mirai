@@ -41,6 +41,7 @@ object GroupData : AutoSavePluginData("GroupData") {
     val groupWelcomeMessage: MutableMap<Long, String> by value(mutableMapOf())
 
 
+    //用来检测群列表有没有开启机器人
     fun switchGroup(group: Group?): Boolean {
         return if (groupList.containsKey(group!!.id)) groupList[group.id] == true else false
     }

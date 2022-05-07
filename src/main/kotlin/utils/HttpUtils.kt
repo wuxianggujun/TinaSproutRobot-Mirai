@@ -12,7 +12,7 @@ import wxgj.tinasproutrobot.mirai.logger.TinaSproutLogger
 
 object HttpUtils {
 
-    private val client = OkHttpClient.Builder().build()
+    val client = OkHttpClient.Builder().build()
 
     suspend fun getCaptCha(): Response {
         val req = Request.Builder().get().url("https://mail.sina.com.cn/cgi-bin/imgcode.php").build()

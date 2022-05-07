@@ -3,6 +3,7 @@ package wxgj.tinasproutrobot.mirai.event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
 import net.mamoe.mirai.event.*
 import net.mamoe.mirai.event.events.GroupMessageEvent
@@ -15,6 +16,7 @@ import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.utils.HttpUtils
+import wxgj.tinasproutrobot.mirai.utils.ScriptChallenge
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.CoroutineContext
 
@@ -34,6 +36,18 @@ object GroupEventListener : SimpleListenerHost() {
         //拦截事件
         //event.intercept()
         logger.info("事件被拦截了,我发不了信息")
+
+
+    }
+
+    @EventHandler
+    suspend fun GroupMessageEvent.onMsg() {
+        if (this.message.contentToString() == "test") {
+            val member = sender as NormalMember
+            launch {
+                ScriptChallenge.auth(member.group.id, member.id, message.contentToString())
+            }
+        }
 
     }
 
