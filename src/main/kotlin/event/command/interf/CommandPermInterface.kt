@@ -1,4 +1,4 @@
-package wxgj.tinasproutrobot.mirai.command.interf
+package wxgj.tinasproutrobot.mirai.event.command.interf
 
 import net.mamoe.mirai.contact.Member
 

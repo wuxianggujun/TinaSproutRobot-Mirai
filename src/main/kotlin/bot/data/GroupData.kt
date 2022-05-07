@@ -4,9 +4,10 @@ import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.ValueName
 import net.mamoe.mirai.console.data.value
+import net.mamoe.mirai.contact.Group
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData.provideDelegate
-import wxgj.tinasproutrobot.mirai.command.AdminPermissionsData.provideDelegate
+import wxgj.tinasproutrobot.mirai.event.command.AdminPermissionsData.provideDelegate
 
 /*用来存储语群有关系的数据
 比如当前群的机器人的管理员列表*/
@@ -38,5 +39,10 @@ object GroupData : AutoSavePluginData("GroupData") {
 
     @ValueDescription("群欢迎消息")
     val groupWelcomeMessage: MutableMap<Long, String> by value(mutableMapOf())
+
+
+    fun switchGroup(group: Group?): Boolean {
+        return if (groupList.containsKey(group!!.id)) groupList[group.id] == true else false
+    }
 
 }

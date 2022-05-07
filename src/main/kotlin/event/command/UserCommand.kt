@@ -1,4 +1,4 @@
-package wxgj.tinasproutrobot.mirai.command
+package wxgj.tinasproutrobot.mirai.event.command
 
 import net.mamoe.mirai.console.command.CompositeCommand
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage

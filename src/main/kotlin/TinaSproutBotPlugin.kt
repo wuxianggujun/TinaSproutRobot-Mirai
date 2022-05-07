@@ -16,8 +16,8 @@ import net.mamoe.mirai.event.globalEventChannel
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
-import wxgj.tinasproutrobot.mirai.command.*
 import wxgj.tinasproutrobot.mirai.event.GroupEventListener
+import wxgj.tinasproutrobot.mirai.event.command.*
 import wxgj.tinasproutrobot.mirai.logger.TinaSproutLogger
 
 object TinaSproutBotPlugin : KotlinPlugin(
@@ -35,7 +35,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
     override fun onEnable() {
         data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
-        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand,UserCommand)
+        commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand, UserCommand)
         data.forEach {
             it.reload()
         }

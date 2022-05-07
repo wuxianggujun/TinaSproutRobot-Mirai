@@ -1,4 +1,4 @@
-package wxgj.tinasproutrobot.mirai.command
+package wxgj.tinasproutrobot.mirai.event.command
 
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData

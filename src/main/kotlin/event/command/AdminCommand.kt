@@ -1,4 +1,4 @@
-package wxgj.tinasproutrobot.mirai.command
+package wxgj.tinasproutrobot.mirai.event.command
 
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.CompositeCommand
@@ -19,8 +19,8 @@ import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
 import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
-import wxgj.tinasproutrobot.mirai.command.AdminCommand.add
-import wxgj.tinasproutrobot.mirai.command.interf.CommandPermInterface
+import wxgj.tinasproutrobot.mirai.event.command.AdminCommand.add
+import wxgj.tinasproutrobot.mirai.event.command.interf.CommandPermInterface
 
 
 object AdminCommand : CompositeCommand(
@@ -39,20 +39,20 @@ object AdminCommand : CompositeCommand(
 
     @SubCommand("add", "添加")
     suspend fun CommandSender.add(member: NormalMember) {
-        val group = adminData.grouplist
+        val group = AdminPermissionsData.grouplist
         if (group != null) {
             if (!group.containsKey(member.group.id)) {
                 group[member.group.id] = false
             }
-            if (adminData.adminPermMap.containsKey(member.group.id)) {
-                val groupAdminList = adminData.adminPermMap.get(member.group.id)
+            if (AdminPermissionsData.adminPermMap.containsKey(member.group.id)) {
+                val groupAdminList = AdminPermissionsData.adminPermMap.get(member.group.id)
                 if (!groupAdminList!!.contains(member.id)) {
                     groupAdminList.add(member.id)
                 }
             } else {
                 val adminList = mutableListOf<Long>()
                 adminList.add(member.id)
-                adminData.adminPermMap[member.group.id] = adminList
+                AdminPermissionsData.adminPermMap[member.group.id] = adminList
                 TinaSproutBotPlugin.logger.info("添加到管理员列表")
             }
 
@@ -61,7 +61,7 @@ object AdminCommand : CompositeCommand(
                 TinaSproutBotPlugin.logger.info("注册的权限:${P.id}")
                 if (P.id == AdminCommand.permission.id) {
                     TinaSproutBotPlugin.logger.info(":${P.id}权限等于${permission.id}")
-                    adminData.adminPermMap.filter { (key, value) ->
+                    AdminPermissionsData.adminPermMap.filter { (key, value) ->
                         key == member.group.id
                     }.map {
                         it.value.forEach { v ->
