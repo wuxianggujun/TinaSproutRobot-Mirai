@@ -57,6 +57,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
 
         val eventChannel = this.globalEventChannel().parentScope(this)
 
+
         //多个机器人账号登录时，只有配置文件上写的QQ才会响应
         eventChannel.filterIsInstance(BotOnlineEvent::class.java)
             .filter { e -> e.bot.id == SettingsConfig.roBot }

@@ -4,6 +4,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.contact.NormalMember
+import net.mamoe.mirai.contact.isOperator
 import net.mamoe.mirai.event.*
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MemberJoinEvent
@@ -15,6 +16,7 @@ import net.mamoe.mirai.message.data.at
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
+import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin.save
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.utils.HttpUtils
 import wxgj.tinasproutrobot.mirai.utils.ScriptChallenge
@@ -37,9 +39,19 @@ object GroupEventListener : SimpleListenerHost() {
         logger.info("事件被拦截了")
         //拦截事件
         //event.intercept()
-        logger.info("事件被拦截了,我发不了信息")
-
-
+        if (event.sender.isOperator()) {
+            if (GroupData.adminPermMap.containsKey(event.sender.group.id)) {
+                val list = GroupData.adminPermMap.getValue(event.sender.group.id)
+                if (!list.contains(event.sender.id)) {
+                    list.add(event.sender.id)
+                }
+            } else {
+                val list = mutableListOf<Long>()
+                list.add(event.sender.id)
+                GroupData.adminPermMap[event.sender.group.id] = list
+            }
+        }
+        GroupData.save()
     }
 
     @EventHandler
