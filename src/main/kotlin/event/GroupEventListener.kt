@@ -3,21 +3,23 @@ package wxgj.tinasproutrobot.mirai.event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
 import net.mamoe.mirai.event.*
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MemberJoinEvent
 import net.mamoe.mirai.event.events.MemberJoinRequestEvent
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.Message
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.at
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
+import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.utils.HttpUtils
 import wxgj.tinasproutrobot.mirai.utils.ScriptChallenge
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.coroutines.CoroutineContext
 
 
@@ -51,6 +53,10 @@ object GroupEventListener : SimpleListenerHost() {
 
     }
 
+    /*成员已经加入群: MemberJoinEvent
+
+    成员被邀请加入群: Invite
+    成员主动加入群: Active*/
     @EventHandler
     suspend fun MemberJoinEvent.onJoin() {
 //        delay(2000)
@@ -58,6 +64,24 @@ object GroupEventListener : SimpleListenerHost() {
 //            addToNeedAuth(member)
 //                launch { captchaSession(member) }
 //        }
+        val groupMessage = GroupData.groupWelcomeMessage
+        //判断群有没有开启机器人
+        if (GroupData.switchGroup(group)) {
+            //判断有没有添加到列表，添加到列表即为开启
+            if (groupMessage.containsKey(group.id)) {
+                //游历群的欢迎新用户消息
+                groupMessage.forEach { (key, value) ->
+                    if (key == group.id) {
+                        //使用随机数，生成0~list.size中的任何一个数字
+                        val random = ThreadLocalRandom.current().nextInt(0, groupMessage.getValue(group.id).size)
+                        val msg: Message = At(member.id) + PlainText("\n") + PlainText(value[random])
+                        member.group.sendMessage(msg)
+                    }
+                }
+            }
+
+        }
+
 
     }
 
@@ -65,6 +89,10 @@ object GroupEventListener : SimpleListenerHost() {
     @EventHandler
     suspend fun MemberJoinRequestEvent.onRequest() {
 
+        //如果群开启机器人，则自动同意加群申请
+        if (GroupData.switchGroup(group)) {
+            accept()
+        }
 
     }
 

@@ -5,9 +5,6 @@ import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.ValueName
 import net.mamoe.mirai.console.data.value
 import net.mamoe.mirai.contact.Group
-import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData.provideDelegate
-import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData.provideDelegate
-import wxgj.tinasproutrobot.mirai.event.command.AdminPermissionsData.provideDelegate
 
 /*用来存储语群有关系的数据
 比如当前群的机器人的管理员列表*/
@@ -26,7 +23,7 @@ object GroupData : AutoSavePluginData("GroupData") {
      */
     @ValueName("botAdminMap")
     @ValueDescription("Bot管理员列表")
-    val botAdminMap: MutableMap<Long, MutableList<Long>> by value(mutableMapOf())
+    val adminPermMap: MutableMap<Long, MutableList<Long>> by value(mutableMapOf())
 
     /**
      * Auto matic response map
@@ -38,7 +35,7 @@ object GroupData : AutoSavePluginData("GroupData") {
     var autoMaticResponseMap: MutableMap<Long, Boolean> by value(mutableMapOf())
 
     @ValueDescription("群欢迎消息")
-    val groupWelcomeMessage: MutableMap<Long, String> by value(mutableMapOf())
+    val groupWelcomeMessage: MutableMap<Long, MutableList<String>> by value(mutableMapOf<Long, MutableList<String>>())
 
 
     //用来检测群列表有没有开启机器人

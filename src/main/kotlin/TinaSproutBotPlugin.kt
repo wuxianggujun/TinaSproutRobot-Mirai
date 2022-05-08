@@ -34,7 +34,7 @@ object TinaSproutBotPlugin : KotlinPlugin(
     lateinit var welcomeJoinGroupPermission: Permission
 
     override fun onEnable() {
-        data = listOf(SettingsConfig, GroupPermissionData, AdminPermissionsData, GroupData)
+        data = listOf(SettingsConfig, GroupPermissionData, GroupData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand, UserCommand)
         data.forEach {
             it.reload()
