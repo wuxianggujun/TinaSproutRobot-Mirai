@@ -1,15 +1,17 @@
 package wxgj.tinasproutrobot.mirai.bot.data
 
+import kotlinx.coroutines.yield
 import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.ValueName
 import net.mamoe.mirai.console.data.value
 import net.mamoe.mirai.contact.Group
+import net.mamoe.mirai.data.RequestEventData
 
 /*用来存储语群有关系的数据
 比如当前群的机器人的管理员列表*/
 
-object GroupData : AutoSavePluginData("GroupData") {
+public object GroupData : AutoSavePluginData("GroupData"){
 
     @ValueName("groupList")
     @ValueDescription("群列表,如果是TRUE也就是在本群开启机器人")
@@ -42,5 +44,6 @@ object GroupData : AutoSavePluginData("GroupData") {
     fun switchGroup(group: Group?): Boolean {
         return if (groupList.containsKey(group!!.id)) groupList[group.id] == true else false
     }
+
 
 }

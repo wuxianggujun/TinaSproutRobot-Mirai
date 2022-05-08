@@ -17,7 +17,9 @@ import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin.save
+import wxgj.tinasproutrobot.mirai.bot.data.AdminAutoConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
+import wxgj.tinasproutrobot.mirai.bot.data.TinaSproutRobotPluginData
 import wxgj.tinasproutrobot.mirai.utils.HttpUtils
 import wxgj.tinasproutrobot.mirai.utils.ScriptChallenge
 import java.util.concurrent.ConcurrentHashMap
@@ -102,7 +104,7 @@ object GroupEventListener : SimpleListenerHost() {
     suspend fun MemberJoinRequestEvent.onRequest() {
 
         //如果群开启机器人，则自动同意加群申请
-        if (GroupData.switchGroup(group)) {
+        if (GroupData.switchGroup(group)&&AdminAutoConfig.autoGroupAccept) {
             accept()
         }
 

@@ -1,16 +1,23 @@
 package wxgj.tinasproutrobot.mirai.event.command
 
 import net.mamoe.mirai.console.command.CommandSender
+import net.mamoe.mirai.console.command.CommandSenderOnMessage
 import net.mamoe.mirai.console.command.CompositeCommand
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
+import net.mamoe.mirai.console.util.ContactUtils.render
+import net.mamoe.mirai.contact.Contact
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.isOperator
+import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.MessageSource
+import net.mamoe.mirai.utils.warning
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin
 import wxgj.tinasproutrobot.mirai.TinaSproutBotPlugin.save
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
+import wxgj.tinasproutrobot.mirai.event.command.AdminCommand.recall
 
 
 object AdminCommand : CompositeCommand(
@@ -65,6 +72,11 @@ object AdminCommand : CompositeCommand(
         } else sendMessage("${SettingsConfig.botName}:臣妾做不到啊！")
     }
 
+    @SubCommand("recall")
+    suspend fun CommandSender.recall(contact: Contact? = null) {
+
+
+    }
 
 //
 //    @SubCommand("list", "查看列表")

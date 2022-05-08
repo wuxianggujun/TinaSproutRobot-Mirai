@@ -14,6 +14,7 @@ import net.mamoe.mirai.event.EventChannel
 import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.event.globalEventChannel
 import wxgj.tinasproutrobot.mirai.bot.config.SettingsConfig
+import wxgj.tinasproutrobot.mirai.bot.data.AdminAutoConfig
 import wxgj.tinasproutrobot.mirai.bot.data.GroupData
 import wxgj.tinasproutrobot.mirai.bot.data.GroupPermissionData
 import wxgj.tinasproutrobot.mirai.event.GroupEventListener
@@ -31,10 +32,10 @@ object TinaSproutBotPlugin : KotlinPlugin(
     private lateinit var data: List<PluginData>
 
     //群欢迎权限
-    lateinit var welcomeJoinGroupPermission: Permission
+    private lateinit var welcomeJoinGroupPermission: Permission
 
     override fun onEnable() {
-        data = listOf(SettingsConfig, GroupPermissionData, GroupData)
+        data = listOf(SettingsConfig, GroupPermissionData,AdminAutoConfig, GroupData)
         commands = listOf(MasterCommand, AdminCommand, GroupCommand, WelcomeCommand, HelpCommand, UserCommand)
         data.forEach {
             it.reload()
